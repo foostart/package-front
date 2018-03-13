@@ -1,6 +1,6 @@
 @webiste: http://foostart.com
 
-@package-name: front
+@package-name: package-front
 @author: Kang
 @date: 27/12/2017
 @version: 2.0

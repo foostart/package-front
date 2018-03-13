@@ -2,7 +2,7 @@
 
 /*
 |-------------------------------------------------------------------------------
-| HomeController
+| ErrorController
 |-------------------------------------------------------------------------------
 | @author: Kang
 | @website: http://foostart.com
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\App;
 
 use Foostart\Front\Controllers\FrontController;
 
-class HomeController extends FrontController {
+class ErrorController extends FrontController {
 
     public function __construct() {
 
@@ -32,11 +32,11 @@ class HomeController extends FrontController {
         // display view
         $this->data_view = array_merge($this->data_view, array(
             'request' => $request,
-            'assets' => $this->getAssetPage('home')
+            'assets' => $this->getAssetPage('error')
         ));
 
 
-        return view($this->package_name.'::pages.home', $this->data_view);
+        return view($this->package_name.'::pages.error', $this->data_view);
     }
 
 }

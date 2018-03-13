@@ -2,7 +2,7 @@
 
 /*
 |-------------------------------------------------------------------------------
-| HomeController
+| CourseController
 |-------------------------------------------------------------------------------
 | @author: Kang
 | @website: http://foostart.com
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\App;
 
 use Foostart\Front\Controllers\FrontController;
 
-class HomeController extends FrontController {
+class CourseController extends FrontController {
 
     public function __construct() {
 
@@ -25,18 +25,18 @@ class HomeController extends FrontController {
     }
 
     /**
-     * Home page
+     * Contact page
      */
     public function index(Request $request) {
 
         // display view
         $this->data_view = array_merge($this->data_view, array(
             'request' => $request,
-            'assets' => $this->getAssetPage('home')
+            'assets' => $this->getAssetPage('course')
         ));
 
 
-        return view($this->package_name.'::pages.home', $this->data_view);
+        return view($this->package_name.'::pages.course', $this->data_view);
     }
 
 }

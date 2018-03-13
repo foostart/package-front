@@ -2,7 +2,7 @@
 
 /*
 |-------------------------------------------------------------------------------
-| HomeController
+| StudentLoginController
 |-------------------------------------------------------------------------------
 | @author: Kang
 | @website: http://foostart.com
@@ -16,12 +16,10 @@ use Illuminate\Support\Facades\App;
 
 use Foostart\Front\Controllers\FrontController;
 
-class HomeController extends FrontController {
+class StudentLoginController extends FrontController {
 
     public function __construct() {
-
         parent::__construct();
-
     }
 
     /**
@@ -32,11 +30,10 @@ class HomeController extends FrontController {
         // display view
         $this->data_view = array_merge($this->data_view, array(
             'request' => $request,
-            'assets' => $this->getAssetPage('home')
+            'assets' => $this->getAssetPage('student-login')
         ));
 
-
-        return view($this->package_name.'::pages.home', $this->data_view);
+        return view($this->package_name.'::pages.student-login', $this->data_view);
     }
 
 }

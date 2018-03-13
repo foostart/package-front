@@ -25,13 +25,13 @@ class FrontServiceProvider extends ServiceProvider {
         $this->publishConfig();
 
         // publish lang
-        $this->publishLang();
+        //$this->publishLang();
 
         // publish views
-        $this->publishViews();
+        //$this->publishViews();
 
         // publish assets
-        $this->publishAssets();
+        //$this->publishAssets();
     }
 
     /**
@@ -59,6 +59,7 @@ class FrontServiceProvider extends ServiceProvider {
      * @destination: resources/lang
      */
     protected function publishLang() {
+        return true;
         $this->publishes([
             __DIR__ . '/lang' => base_path('resources/lang'),
         ]);
@@ -70,7 +71,7 @@ class FrontServiceProvider extends ServiceProvider {
      * @destination: resources/views/vendor/package-front
      */
     protected function publishViews() {
-
+        return true;
         $this->publishes([
             __DIR__ . '/Views' => base_path('resources/views/vendor/package-front'),
         ]);
