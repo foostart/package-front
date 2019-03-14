@@ -6,49 +6,63 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(['middleware' => [],
         'namespace' => 'Foostart\Front\Controllers',
             ], function () {
+        //Install blocks
         Route::get('/install-blocks', [
             'as' => 'install-block',
             'uses' => 'HomeController@installBlocks'
         ]);
+        Route::get('/convert', [
+            'as' => 'convert',
+            'uses' => 'HomeController@convertLESS2CSS'
+        ]);
+        //Demo
+        Route::get('/demo', [
+            'as' => 'demo',
+            'uses' => 'FrontController@demo'
+        ]);
+
     });
 });
 
 
-/**
- * List of pages
- */
+/*
+|-----------------------------------------------------------------------
+| MAIN PAGES
+|-----------------------------------------------------------------------
+| 01. Home
+| 02. About
+| 03. Blog
+| 04. Blog detail
+| 05. Contact
+| 06. Course
+| 07. Course detail
+| 08. Edit profile
+| 09. Error
+| 10. Event
+| 11. Event detail
+| 12. Faq
+| 13. Gallery
+| 14. Lessons
+| 15. News
+| 16. Teachers
+| 17. Services
+| 18. Signin
+| 19. Student login
+| 20. Student profile
+| 21. Teacher profile
+|
+*/
 Route::group(['middleware' => ['web']], function () {
 
     Route::group(['middleware' => [],
         'namespace' => 'Foostart\Front\Controllers',
             ], function () {
 
-        /*
-          |-----------------------------------------------------------------------
-          | List of pages
-          |-----------------------------------------------------------------------
-          | 01. Home
-          | 02. About
-          | 03. Blog
-          | 04. Blog detail
-          | 05. Contact
-          | 06. Course
-          | 07. Course detail
-          | 08. Edit profile
-          | 09. Error
-          | 10. Event
-          | 11. Event detail
-          | 12. Faq
-          | 13. Gallery
-          | 14. Lessons
-          | 15. News
-          | 16. Teachers
-          | 17. Services
-          | 18. Signin
-          | 19. Student login
-          | 20. Student profile
-          | 21. Teacher profile
-         */
+        $route_exceptions = [
+            'login',
+            'laravel-filemanager',
+        ];
+        $temp = implode('|', $route_exceptions);
 
         /**
          * Home
@@ -61,7 +75,7 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * About
          */
-        Route::get('/about', [
+        Route::get('/gioi-thieu', [
             'as' => 'about',
             'uses' => 'AboutController@index'
         ]);
@@ -77,33 +91,17 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * Blog detail
          */
-        Route::get('/blog-detail', [
+        Route::get('/blog/{blog-detail}', [
             'as' => 'blog-detail',
             'uses' => 'BlogDetailController@index'
-        ]);
+        ])->where(['blog-detail' => '[a-zA-Z0-9-_]+']);
 
         /**
          * Contact
          */
-        Route::get('/contact', [
+        Route::get('/lien-he', [
             'as' => 'contact',
             'uses' => 'ContactController@index'
-        ]);
-
-        /**
-         * Course
-         */
-        Route::get('/course', [
-            'as' => 'course',
-            'uses' => 'CourseController@index'
-        ]);
-
-        /**
-         * Course detail
-         */
-        Route::get('/course-detail', [
-            'as' => 'course-detail',
-            'uses' => 'CourseDetailController@index'
         ]);
 
         /**
@@ -125,7 +123,7 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * Event
          */
-        Route::get('/event', [
+        Route::get('/su-kien', [
             'as' => 'event',
             'uses' => 'EventController@index'
         ]);
@@ -133,15 +131,15 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * Event detail
          */
-        Route::get('/event-detail', [
+        Route::get('/su-kien/{event}', [
             'as' => 'event-detail',
             'uses' => 'EventDetailController@index'
-        ]);
+        ])->where(['event' => '[a-zA-Z0-9-_]+']);
 
         /**
          * Faq
          */
-        Route::get('/faq', [
+        Route::get('/hoi-dap', [
             'as' => 'faq',
             'uses' => 'FaqController@index'
         ]);
@@ -157,7 +155,7 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * Lesson
          */
-        Route::get('/lesson', [
+        Route::get('/khoa-hoc', [
             'as' => 'lesson',
             'uses' => 'LessonController@index'
         ]);
@@ -165,7 +163,7 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * News
          */
-        Route::get('/news', [
+        Route::get('/tin-tuc', [
             'as' => 'news',
             'uses' => 'NewsController@index'
         ]);
@@ -181,7 +179,7 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * Service
          */
-        Route::get('/service', [
+        Route::get('/dich-vu', [
             'as' => 'service',
             'uses' => 'ServiceController@index'
         ]);
@@ -226,6 +224,22 @@ Route::group(['middleware' => ['web']], function () {
             'as' => 'our-teacher',
             'uses' => 'OurTeacherController@index'
         ]);
+
+        /**
+         * Course
+         */
+        Route::get('/{category}', [
+            'as' => 'course',
+            'uses' => 'CourseController@index'
+        ])->where(['category' => '(?![^"]*('.$temp.')[^"]*)[a-zA-Z0-9-_]+']);
+
+        /**
+         * Course detail
+         */
+        Route::get('{category}/{post}-{id}', [
+            'as' => 'course-detail',
+            'uses' => 'CourseDetailController@index'
+        ])->where(['category' => '[a-zA-Z0-9-_]+', 'post' => '[a-zA-Z0-9-_]+', 'id' => '[0-9]+']);
 
     });
 });
