@@ -1,29 +1,29 @@
-<?php namespace Foostart\Sample\Validators;
+<?php namespace Foostart\Front\Validators;
 
 use Foostart\Category\Library\Validators\FooValidator;
 use Event;
 use \LaravelAcl\Library\Validators\AbstractValidator;
-use Foostart\Sample\Models\Sample;
+use Foostart\Front\Models\Front;
 
 use Illuminate\Support\MessageBag as MessageBag;
 
-class SampleValidator extends FooValidator
+class FrontValidator extends FooValidator
 {
 
-    protected $obj_sample;
+    protected $obj_front;
 
     public function __construct()
     {
         // add rules
         self::$rules = [
-            'sample_name' => ["required"],
+            'front_name' => ["required"],
         ];
 
         // event listening
         Event::listen('validating', function($input)
         {
             self::$messages = [
-                'sample_name.required' => trans('sample-admin.errors.required', ['attribute' => 'sample name']),
+                'front_name.required' => trans('front-admin.errors.required', ['attribute' => 'front name']),
             ];
         });
 
@@ -31,7 +31,7 @@ class SampleValidator extends FooValidator
         self::$configs = $this->loadConfigs();
 
         // model
-        $this->obj_sample = new Sample();
+        $this->obj_front = new Front();
     }
 
     /**
@@ -53,8 +53,8 @@ class SampleValidator extends FooValidator
      */
     public function loadConfigs(){
         $configs = [
-            'min_lenght' => config('package-sample.name_min_length'),
-            'max_lenght' => config('package-sample.name_max_length'),
+            'min_lenght' => config('package-front.name_min_length'),
+            'max_lenght' => config('package-front.name_max_length'),
         ];
 
         return $configs;

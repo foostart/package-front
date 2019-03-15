@@ -34,7 +34,8 @@ class FrontController extends Controller {
     public $package_name = 'package-front';
 
     //directory blocks
-    public $dir_blocks = 'K:\dev\tailieuweb\templates\blocks';
+    public $dir_source_blocks = NULL;
+    public $dir_target_blocks = NULL;
 
     //list of blocks id
     public $block_ids = [];
@@ -59,6 +60,48 @@ class FrontController extends Controller {
     //cache
     public $cache = NULL;
 
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+
+        //set directory of list of blocks
+        $dir_source_blocks = config($this->package_name.'.dir.source_blocks');
+
+        if (!empty($dir_source_blocks)) {
+            $this->dir_source_blocks = $dir_source_blocks;
+        }
+        $this->dir_target_blocks = realpath(__DIR__ . '/..');
+
+        //object category
+        $this->obj_category = new FooCategory();
+
+        //load menu to header
+        $params = [
+            'order' => [
+                'category_order' => 'ASC',
+            ],
+        ];
+        $this->data_view['main_menu'] = $this->obj_category->getCategoriesByRef('main_menu', $params);//TODO: cache
+
+        //minify
+        $this->obj_css = new CSS();
+        $this->obj_js = new JS();
+
+        //cache config
+        $this->cache = config($this->package_name.'.cache');
+    }
+
+
+    /**
+     * Set user info
+     * @author Kang
+     * @date 23:30 14/03/2019
+     * @add 305 TT
+     * @param type $user
+     * @return data view
+     */
     public function setUserInfo($user) {
 
         $user = is_array($user) ? (object)$user : $user;
@@ -104,32 +147,6 @@ class FrontController extends Controller {
     }
 
     /**
-     * Constructor
-     */
-    public function __construct() {
-        //send data to view
-        $this->data_view['dir_blocks'] = $this->dir_blocks;
-        //object category
-        $this->obj_category = new FooCategory();
-
-        //load menu to header
-        $params = array(
-            'order' => array(
-                'category_order' => 'ASC',
-            )
-        );
-        $this->data_view['main_menu'] = $this->obj_category->getCategoriesByRef('main_menu', $params);//TODO: cache
-
-        //minify
-        $this->obj_css = new CSS();
-        $this->obj_js = new JS();
-
-        //cache config
-        $this->cache = config($this->package_name.'.cache');
-
-    }
-
-    /**
      * Copy all files from source to target
      * @param STRING $source
      * @param STRING $target
@@ -141,12 +158,12 @@ class FrontController extends Controller {
                 if ($entry == '.' || $entry == '..') {
                     continue;
                 }
-                $Entry = $source . '/' . $entry;
-                if (is_dir($Entry)) {
-                    $this->xcopy($Entry, $target . '/' . $entry);
+                $_entry = $source . '/' . $entry;
+                if (is_dir($_entry)) {
+                    $this->xcopy($_entry, $target . '/' . $entry);
                     continue;
                 }
-                copy($Entry, $target . '/' . $entry);
+                copy($_entry, $target . '/' . $entry);
             }
 
             $d->close();
@@ -173,7 +190,7 @@ class FrontController extends Controller {
         }
 
         //define list of using assets
-        $page_config = config('package-front.page_config');
+        $page_config = config($this->package_name.'.page_config');
 
         //copy css from block to public system
         $env = env('APP_ENV');
@@ -181,20 +198,25 @@ class FrontController extends Controller {
             case 'local':
 
                 //copy block assets to public assets
-                $blocks_path = realpath($this->dir_blocks);
-                $assets_path = realpath(public_path('packages/foostart/package-front/'));
+                $dir_target_block_public = $this->dir_target_blocks . '/public';
 
                 //CSS
                 foreach ($page_config as $_page) {
 
                     foreach ($_page['ids'] as $_id) {
 
-                        $source = realpath($blocks_path . '/' . $_id . '/css/' . $_id . '.css');
+                        $source = realpath($this->dir_source_blocks . '/' . $_id . '/css/' . $_id . '.css');
+
                         if (!empty($source)) {
-                            $target = $assets_path . "/{$css}/blocks/" . $_id . '.css';
+
+                            $dir_target = $dir_target_block_public . "/{$css}/blocks/";
+                            if (!file_exists($dir_target)) {
+                                 mkdir($dir_target, 0755    , true);
+                            }
+                            $target = $dir_target . '/' . $_id . '.css';
+
                             copy($source, $target);
                         }
-
                     }
                 }
 
@@ -203,9 +225,17 @@ class FrontController extends Controller {
 
                     foreach ($_page['ids'] as $_id) {
 
-                        $source = realpath($blocks_path . '/' . $_id . '/less/' . $_id . '.less');
+                        $source = realpath($this->dir_source_blocks . '/' . $_id . '/less/' . $_id . '.less');
+
                         if (!empty($source)) {
-                            $target = $assets_path . "/{$less}/blocks/" . $_id . '.less';
+
+                            $dir_target = $dir_target_block_public . "/{$less}/blocks/";
+                            if (!file_exists($dir_target)) {
+                                 mkdir($dir_target, 0755    , true);
+                            }
+
+                            $target = $dir_target . '/' . $_id . '.less';
+
                             copy($source, $target);
                         }
 
@@ -217,9 +247,17 @@ class FrontController extends Controller {
 
                     foreach ($_page['ids'] as $_id) {
 
-                        $source = realpath($blocks_path . '/' . $_id . '/js/' . $_id . '.js');
+                        $source = realpath($this->dir_source_blocks . '/' . $_id . '/js/' . $_id . '.js');
+
                         if (!empty($source)) {
-                            $target = $assets_path . "/{$js}/blocks/" . $_id . '.js';
+
+                            $dir_target = $dir_target_block_public . "/{$js}/blocks/";
+                            if (!file_exists($dir_target)) {
+                                 mkdir($dir_target, 0755    , true);
+                            }
+
+                            $target = $dir_target . '/' . $_id . '.js';
+
                             copy($source, $target);
                         }
                     }
@@ -242,9 +280,17 @@ class FrontController extends Controller {
                                 case 'js':
                                 case 'css':
                                     foreach ($_values as $_item) {
-                                        $_source = realpath($blocks_path . '/' . $_id . '/' . $_type . '/' . $_item . '.' . $_type);
+                                        $_source = realpath($this->dir_source_blocks . '/' . $_id . '/' . $_type . '/' . $_item . '.' . $_type);
+
                                         if (!empty($_source)) {
-                                            $_target = $assets_path . '/' . $type . '/blocks/' . $_item . '.' . $_type;
+
+                                            $dir_target = $dir_target_block_public . "/{$type}/blocks/";
+                                            if (!file_exists($dir_target)) {
+                                                 mkdir($dir_target, 0755    , true);
+                                            }
+
+                                            $_target = $dir_target . '/' . $_item . '.' . $_type;
+
                                             copy($_source, $_target);
                                         }
                                     }
@@ -276,18 +322,22 @@ class FrontController extends Controller {
             //css
             if (!empty($page['ids'])) {
                 foreach ($page['ids'] as $_id) {
-                    $dir_asset_css = realpath(public_path('packages/foostart/package-front/css/blocks/'.$_id.'.css'));
 
-                    if ($dir_asset_css) {
-                        $css_content = file_get_contents($dir_asset_css);
+                    $dir_source_blocks_asset_css = $this->dir_target_blocks .'/public/css/blocks/' . $_id .'.css';
+
+                    if (file_exists($dir_source_blocks_asset_css)) {
+
+                        $css_content = file_get_contents($dir_source_blocks_asset_css);
 
                         preg_match_all($patterns['image'], $css_content, $matches);
                         if (!empty($matches[1])) {
+
                             foreach ($matches[1] as $image_name) {
                                 if (!in_array($image_name, $bkg_images)) {
                                     $bkg_images[] = $image_name;
                                 }
                             }
+
                         }
                     }
                 }
@@ -299,11 +349,17 @@ class FrontController extends Controller {
 
             foreach ($bkg_images as $image_name) {
                 //source
-                $_source = realpath(public_path('images/'.$image_name));
+                $_dir_source_block_image_backround = realpath($this->dir_target_blocks.'/public/images/'.$image_name);
+
                 //target
-                $_target = realpath(public_path('packages/foostart/package-front/css/images')).'/'.$image_name;
+                $dir_target = $this->dir_target_blocks.'/public/css/images';
+                if (!file_exists($dir_target)) {
+                    mkdir($dir_target, 0755    , true);
+                }
+                $_dir_target_block_image_background = realpath($dir_target) . '/' . $image_name;
+
                 //copy
-                $this->xcopy($_source, $_target);
+                $this->xcopy($_dir_source_block_image_backround, $_dir_target_block_image_background);
             }
         }
 
@@ -314,18 +370,22 @@ class FrontController extends Controller {
     public function installBlocks() {
 
         //list of block ids
-        $this->block_ids = config('package-front.block_ids');
+        $this->block_ids = config($this->package_name.'.block_ids');
 
         //target directory of blocks
-        $dir_target_blocks = realpath(realpath(__DIR__ . '/..') . '/Views/blocks');
+        $dir_target_block_views = $this->dir_target_blocks . '/Views/blocks';
+        if (!file_exists($dir_target_block_views)) {
+                mkdir($dir_target_block_views, 0755    , true);
+        }
+        $dir_target_block_views = realpath($dir_target_block_views);
 
         /**
          * copy to blade content
          */
         foreach ($this->block_ids as $id) {
             //source content
-            $_source = realpath($this->dir_blocks . '/' . $id . '/' . $id . '-content.php');
-            $_target = $dir_target_blocks . '/' . $id . '-content.blade.php';
+            $_source = realpath($this->dir_source_blocks . '/' . $id . '/' . $id . '-content.php');
+            $_target = $dir_target_block_views . '/' . $id . '-content.blade.php';
 
             if ($_source) {
                 //copy($_source, $_target);
@@ -335,24 +395,30 @@ class FrontController extends Controller {
         /**
          * copy to images
          */
-        $image_paths = public_path('images');
+        $dir_target_block_images = $this->dir_target_blocks . '/public/images';
+        if (!file_exists($dir_target_block_images)) {
+                mkdir($dir_target_block_images, 0755    , true);
+        }
+        $_target = realpath($dir_target_block_images);
+
         foreach ($this->block_ids as $id) {
             //source images
-            $_source = realpath($this->dir_blocks . '/' . $id . '/images');
-            //target images
-            $_target = public_path('images');
+            $_source = realpath($this->dir_source_blocks . '/' . $id . '/images');
+
+
             //$this->xcopy($_source, $_target);
         }
+
+        /**
+         * Copy assets (css, js, libs) from block source
+         */
+//        $this->copy_assets();
+
 
         /**
          * copy background image
          */
         $this->copyBackgroundImage();
-
-        /**
-         * Copy assets (css, js, libs) from block source
-         */
-        $this->copy_assets();
     }
 
     /**
@@ -361,25 +427,9 @@ class FrontController extends Controller {
     public function configBlockPageIds() {
         $this->block_page_ids = [
             'home' => $this->getPageConfig('home'),
-            'blog' => $this->getPageConfig('blog'),
-            'about' => $this->getPageConfig('about'),
-            'blog-detail' => $this->getPageConfig('blog-detail'),
+            'detail' => $this->getPageConfig('detail'),
+            'checklist' => $this->getPageConfig('checklist'),
             'contact' => $this->getPageConfig('contact'),
-            'course' => $this->getPageConfig('course'),
-            'course-detail' => $this->getPageConfig('course-detail'),
-            'edit-profile' => $this->getPageConfig('edit-profile'),
-            'error' => $this->getPageConfig('error'),
-            'event-detail' => $this->getPageConfig('event-detail'),
-            'event' => $this->getPageConfig('event'),
-            'faq' => $this->getPageConfig('faq'),
-            'gallery' => $this->getPageConfig('gallery'),
-            'lesson' => $this->getPageConfig('lesson'),
-            'news' => $this->getPageConfig('news'),
-            'service' => $this->getPageConfig('service'),
-            'signin' => $this->getPageConfig('signin'),
-            'student-login' => $this->getPageConfig('student-login'),
-            'student-profile' => $this->getPageConfig('student-profile'),
-            'teacher-profile' => $this->getPageConfig('teacher-profile'),
         ];
         return $this->block_page_ids;
     }
@@ -389,7 +439,7 @@ class FrontController extends Controller {
      * @return ARRAY list of config assets
      */
     public function getPageConfig($page_name) {
-        return config('package-front.page_config.'.$page_name);
+        return config($this->package_name.'.page_config.'.$page_name);
     }
 
     /**
@@ -434,8 +484,9 @@ class FrontController extends Controller {
          * core lib
          */
         //dir path
-        $dirs['css'] = config('package-front.assets_lib.css');
-        $dirs['js'] = config('package-front.assets_lib.js');
+        $dirs['css'] = config($this->package_name.'.assets_lib.css');
+        $dirs['js'] = config($this->package_name.'.assets_lib.js');
+
         //css
         foreach ($dirs['css'] as $_item) {
             $_dir_css = realpath(public_path($_item));
@@ -548,7 +599,7 @@ class FrontController extends Controller {
      */
     public function minifyCSS($dirs, $output_path) {
 
-        $css_lib = config('package-front.assets_lib.css');
+        $css_lib = config($this->package_name.'.assets_lib.css');
 
         foreach ($css_lib as $lib) {
             $dir_css = realpath(public_path($lib));
@@ -571,7 +622,7 @@ class FrontController extends Controller {
      */
     public function minifyJS($dirs, $output_path) {
 
-        $js_lib = config('package-front.assets_lib.js');
+        $js_lib = config($this->package_name.'.assets_lib.js');
 
         foreach ($js_lib as $lib) {
             $dir_js = realpath(public_path($lib));
@@ -587,6 +638,9 @@ class FrontController extends Controller {
 
     }
 
+    /**
+     * Convert LESS to CSS
+     */
     public function convertLESS2CSS(){
         $this->copy_assets(FALSE);
     }
