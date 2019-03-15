@@ -103,13 +103,12 @@ return [
     */
     'assets_lib' => [
         'css' => [
-            'packages/foostart/package-front/css/bootstrap-3.3.7.min.css',
-            'packages/foostart/package-front/css/font-awesome-4.7.0.min.css',
+            'packages/foostart/package-front/css/bootstrap-3.3.6.min.css',
+            'packages/foostart/package-front/css/font-awesome-4.6.3.min.css',
         ],
         'js' => [
-            'packages/foostart/package-front/js/jquery-2.2.4.min.js',
-            'packages/foostart/package-front/js/bootstrap-3.3.7.min.js',
-            'packages/foostart/package-front/js/gtag.js',
+            'packages/foostart/package-front/js/jquery-2.1.4.min.js',
+            'packages/foostart/package-front/js/bootstrap3.3.6.min.js',
         ]
     ],
 
@@ -146,6 +145,5 @@ return [
     */
     'dir' => [
         'source_blocks' => 'K:\dev\wikicase\trunk\public\templates\blocks',
-        'asset' => 'K:\dev\wikicase\trunk\public\packages\foostart\package-front\\',
     ],
 ];

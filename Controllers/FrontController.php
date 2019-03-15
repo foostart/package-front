@@ -386,9 +386,8 @@ class FrontController extends Controller {
             //source content
             $_source = realpath($this->dir_source_blocks . '/' . $id . '/' . $id . '-content.php');
             $_target = $dir_target_block_views . '/' . $id . '-content.blade.php';
-
             if ($_source) {
-                //copy($_source, $_target);
+                copy($_source, $_target);
             }
         }
 
@@ -405,14 +404,13 @@ class FrontController extends Controller {
             //source images
             $_source = realpath($this->dir_source_blocks . '/' . $id . '/images');
 
-
-            //$this->xcopy($_source, $_target);
+            $this->xcopy($_source, $_target);
         }
 
         /**
          * Copy assets (css, js, libs) from block source
          */
-//        $this->copy_assets();
+        $this->copy_assets();
 
 
         /**
