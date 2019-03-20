@@ -30,26 +30,8 @@ Route::group(['middleware' => ['web']], function () {
 | MAIN PAGES
 |-----------------------------------------------------------------------
 | 01. Home
-| 02. About
-| 03. Blog
-| 04. Blog detail
-| 05. Contact
-| 06. Course
-| 07. Course detail
-| 08. Edit profile
-| 09. Error
-| 10. Event
-| 11. Event detail
-| 12. Faq
-| 13. Gallery
-| 14. Lessons
-| 15. News
-| 16. Teachers
-| 17. Services
-| 18. Signin
-| 19. Student login
-| 20. Student profile
-| 21. Teacher profile
+| 02. Checklist
+| 03. Item
 |
 */
 Route::group(['middleware' => ['web']], function () {
@@ -71,20 +53,30 @@ Route::group(['middleware' => ['web']], function () {
             'as' => 'home',
             'uses' => 'HomeController@index'
         ]);
+
         /**
-         * Detail
+         * Item
          */
-        Route::get('/detail', [
-            'as' => 'detail',
-            'uses' => 'DetailController@index'
-        ]);
+        Route::get('/item/{name}-{id}', [
+            'as' => 'item',
+            'uses' => 'ItemController@index'
+        ])->where(['name' => '[a-zA-Z0-9-_]+','id' => '[0-9]+']);
+
         /**
          * Checklist
          */
-        Route::get('/checklist', [
+        Route::get('/checklist/{name}-{id}', [
             'as' => 'checklist',
-            'uses' => 'DetailController@index'
-        ]);
+            'uses' => 'ChecklistController@index'
+        ])->where(['name' => '[a-zA-Z0-9-_]+','id' => '[0-9]+']);
+
+        /**
+         * Search
+         */
+        Route::get('/search/{keyword?}', [
+            'as' => 'search',
+            'uses' => 'SearchController@index'
+        ])->where(['keyword' => '[a-zA-Z0-9-_]+']);
 
     });
 });

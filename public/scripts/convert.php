@@ -11,24 +11,23 @@ $css = 'css';
 
 
 //define list of using assets
-$page_config = $config['page_config'];
+$block_ids = $config['block_ids'];
 
 //build LESS to CSS
 $assets_path = realpath(__DIR__.'../../');
 
 //LESS
-foreach ($page_config as $_page) {
+foreach ($block_ids as $id) {
 
-    foreach ($_page['ids'] as $_id) {
 
-        $source = realpath($assets_path . '/' . $less . '/blocks/' . $_id . '.less');
-        $target = $assets_path . '/' . $css . '/blocks/' . $_id . '.css';
+    $source = realpath($assets_path . '/' . $less . '/blocks/' . $id . '.less');
+    $target = $assets_path . '/' . $css . '/blocks/' . $id . '.css';
 
-        if (!empty($source)) {
-            $obj_less = new lessc();
-            $obj_less->compileFile($source, $target);
-        }
+    if (!empty($source)) {
+        $obj_less = new lessc();
+        $obj_less->compileFile($source, $target);
     }
+
 }
 
 ?>
