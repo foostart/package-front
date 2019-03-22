@@ -25,13 +25,13 @@ class FrontServiceProvider extends ServiceProvider {
         $this->publishConfig();
 
         // publish lang
-        //$this->publishLang();
+        $this->publishLang();
 
         // publish views
-        //$this->publishViews();
+        $this->publishViews();
 
         // publish assets
-        //$this->publishAssets();
+        $this->publishAssets();
     }
 
     /**
@@ -83,7 +83,10 @@ class FrontServiceProvider extends ServiceProvider {
     protected function publishAssets() {
 
         $this->publishes([
-            __DIR__ . '/public' => public_path('packages/foostart/package-front'),
+            __DIR__ . '/public/css' => public_path('packages/foostart/package-front/css'),
+            __DIR__ . '/public/js' => public_path('packages/foostart/package-front/js'),
+            __DIR__ . '/public/images' => public_path('packages/foostart/package-front/images'),
+            __DIR__ . '/public/fonts' => public_path('packages/foostart/package-front/font'),
         ]);
     }
 
