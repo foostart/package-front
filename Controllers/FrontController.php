@@ -34,6 +34,7 @@ class FrontController extends Controller {
     public $package_name = 'package-front';
 
     //directory blocks
+    public $root_source_blocks = NULL;
     public $dir_source_blocks = NULL;
     public $dir_target_blocks = NULL;
 
@@ -64,14 +65,18 @@ class FrontController extends Controller {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct($flag = true) {
+
+        //set root source blocks
+        $this->root_source_blocks = realpath(config($this->package_name.'.dir.root_source_blocks'));
 
         //set directory of list of blocks
         $dir_source_blocks = config($this->package_name.'.dir.source_blocks');
 
-        if (!empty($dir_source_blocks)) {
-            $this->dir_source_blocks = $dir_source_blocks;
+        if ($flag && !file_exists($dir_source_blocks)) {
+            mkdir($dir_source_blocks, 0755    , true);
         }
+        $this->dir_source_blocks = realpath($dir_source_blocks);
         $this->dir_target_blocks = realpath(__DIR__ . '/..');
 
         //object category
@@ -160,7 +165,11 @@ class FrontController extends Controller {
                 }
                 $_entry = $source . '/' . $entry;
                 if (is_dir($_entry)) {
-                    $this->xcopy($_entry, $target . '/' . $entry);
+                    $_target =  $target . '/' . $entry;
+                    if (!file_exists($_target)) {
+                        mkdir($_target, 0755    , true);
+                    }
+                    $this->xcopy($_entry, $_target);
                     continue;
                 }
                 copy($_entry, $target . '/' . $entry);
@@ -171,6 +180,38 @@ class FrontController extends Controller {
             if (!empty($source)) {
                 copy($source, $target);
             }
+        }
+    }
+
+
+    /**
+     * Copy used block in projects from root source block
+     */
+    public function copyBlocks() {
+
+        if (!config($this->package_name.'.dir.status')) {
+            dd('stop');
+        }
+
+        $this->block_ids = config($this->package_name.'.block_ids');
+
+        //Copy from directory source block
+        foreach ($this->block_ids as $id) {
+
+            //source
+            $source_block_item = realpath($this->root_source_blocks.'/'.$id);
+
+            //target
+            $target_source_block_item = $this->dir_source_blocks.'/'.$id;
+            if (!file_exists($target_source_block_item)) {
+                mkdir($target_source_block_item, 0755    , true);
+            }
+            $target_source_block_item = realpath($target_source_block_item);
+
+
+            //copy all content
+            $this->xcopy($source_block_item, $target_source_block_item);
+
         }
     }
 

@@ -144,6 +144,8 @@ return [
     |
     */
     'dir' => [
-        'source_blocks' => 'K:\dev\wikicase\trunk\public\templates\blocks',
+        'status' => TRUE,
+        'root_source_blocks' => 'E:\dev\1-blocks\1-sources',
+        'source_blocks' => 'K:\dev\5-theptinhuy.com\trunk\public\templates\blocks',
     ],
 ];
