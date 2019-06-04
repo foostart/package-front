@@ -61,6 +61,7 @@ return [
     |
     */
     'pages' => [
+        'title-home' => 'WikiCase 2.0',
         'title-list' => 'List of samples',
         'title-list-search' => 'Search results',
         'title-edit' => 'Edit sample',

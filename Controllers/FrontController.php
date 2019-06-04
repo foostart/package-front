@@ -2,13 +2,15 @@
 
 /*
 |-------------------------------------------------------------------------------
-| FrontController
+| HomeController
 |-------------------------------------------------------------------------------
-| @author: Kang
-| @website: http://foostart.com
-| @date: 27/01/2018
+| @author: ptnhuan
+| @id: LPTE03
+| @date: 11/04/2019
+| @location: B111 - TDC
+| @copyright: Lampart
 |
- */
+*/
 
 use Illuminate\Http\Request;
 use URL,
@@ -65,7 +67,7 @@ class FrontController extends Controller {
     /**
      * Constructor
      */
-    public function __construct($flag = true) {
+    public function __construct() {
 
         //set root source blocks
         $this->root_source_blocks = realpath(config($this->package_name.'.dir.root_source_blocks'));
@@ -73,7 +75,7 @@ class FrontController extends Controller {
         //set directory of list of blocks
         $dir_source_blocks = config($this->package_name.'.dir.source_blocks');
 
-        if ($flag && !file_exists($dir_source_blocks)) {
+        if (!file_exists($dir_source_blocks)) {
             mkdir($dir_source_blocks, 0755    , true);
         }
         $this->dir_source_blocks = realpath($dir_source_blocks);
@@ -428,7 +430,7 @@ class FrontController extends Controller {
             $_source = realpath($this->dir_source_blocks . '/' . $id . '/' . $id . '-content.php');
             $_target = $dir_target_block_views . '/' . $id . '-content.blade.php';
             if ($_source) {
-                copy($_source, $_target);
+                //copy($_source, $_target);
             }
         }
 
@@ -445,13 +447,14 @@ class FrontController extends Controller {
             //source images
             $_source = realpath($this->dir_source_blocks . '/' . $id . '/images');
 
-            $this->xcopy($_source, $_target);
+
+            //$this->xcopy($_source, $_target);
         }
 
         /**
          * Copy assets (css, js, libs) from block source
          */
-        $this->copy_assets();
+//        $this->copy_assets();
 
 
         /**

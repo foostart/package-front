@@ -21,16 +21,15 @@ use Foostart\Front\Controllers\FrontController;
 //Models
 use Foostart\Category\Models\Category;
 use Foostart\Post\Models\Post;
-use Foostart\Checklist\Models\CheckedRule;
 use Foostart\Checklist\Models\Task;
+use Foostart\Checklist\Models\CheckedRule;
 
-class SearchController extends FrontController {
+class RulesController extends FrontController {
 
     public $obj_rule = NULL;
     public $obj_task = NULL;
     public $obj_checked_rule = NULL;
     public $obj_category = NULL;
-
 
     public function __construct() {
 
@@ -46,8 +45,9 @@ class SearchController extends FrontController {
     /**
      * Home page
      */
-    public function index(Request $request) {
+    public function index($name, $id) {
 
+        $request = new Request();
         //init
         $user = $this->getUser();
 
@@ -57,12 +57,18 @@ class SearchController extends FrontController {
         $current_task = NULL;
         $checked_rule_ids = [];
 
+        //Get category by id
+        $params = array(
+            'category_id' => $id,
+            'limit' => 5,//TODO: config
+        );
+        $category = $this->obj_category->getCategoryById($id);
+
+        if (empty($category)) {
+            return redirect()->route('home', []);
+        }
 
         //Get list of rules by category id
-        $params = [
-            'keyword' => $request->get('keyword'),
-            'limit' => 5,//TODO: config
-        ];
         $rules = $this->obj_rules->selectItems($params);
 
         //Get current task
@@ -89,7 +95,8 @@ class SearchController extends FrontController {
         $this->data_view = array_merge($this->data_view, array(
             'request' => $request,
             'assets' => $this->getAssetPage('rules'),
-            'title' => $params['keyword'],
+            'title' => $category->category_name,
+            'category' => $category,
             'rules' => $rules,
             'user' => $user,
             'current_task' => $current_task,
@@ -97,7 +104,7 @@ class SearchController extends FrontController {
             'checked_rule_ids' => $checked_rule_ids,
         ));
 
-        return view($this->package_name.'::pages.search', $this->data_view);
+        return view($this->package_name.'::pages.rules', $this->data_view);
     }
 
 }

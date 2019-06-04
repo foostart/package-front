@@ -1,0 +1,161 @@
+a:hover {
+  text-decoration: none;
+}
+.read-more {
+  text-decoration: none;
+  color: #dacb46;
+  font-style: italic;
+}
+.read-more:hover {
+  color: #ffdb35;
+}
+.type-859 .yes {
+  width: 100%;
+  margin: 0;
+}
+.type-859 .yes .clearfixx {
+  zoom: 1;
+  text-align: center;
+}
+.type-859 .yes .clearfixx h3 {
+  color: #707070;
+  font-family: Lora, serif;
+  font-style: italic;
+  letter-spacing: 1px;
+  font-size: 24px;
+  line-height: 26px;
+  font-weight: 300;
+}
+.type-859 .yes .clearfixx h3 .info-icon {
+  border: 1px solid #707070;
+  border-radius: 50%;
+  display: inline-block;
+  height: 32px;
+  line-height: 30px;
+  margin-right: 10px;
+  position: relative;
+  width: 32px;
+}
+@media (max-width: 959px) and (min-width: 768px) {
+  .type-859 .yes .clearfixx h3 {
+    font-size: 20px;
+    line-height: 22px;
+  }
+}
+@media only screen and (max-width: 479px) {
+  .type-859 .yes .clearfixx h3 {
+    font-size: 14px;
+    line-height: 19px;
+  }
+}
+.type-859 .yes .clearfixx hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid white;
+}
+.type-859 .yes .clearfixx button {
+  width: 365px;
+  height: 45px;
+  border: 2px solid #a2b657;
+  background: white;
+  color: #a2b657;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: all .3s;
+}
+@media (max-width: 495px) {
+  .type-859 .yes .clearfixx button {
+    width: auto;
+    height: 63px;
+    line-height: 1;
+  }
+}
+.type-859 .yes .clearfixx button:hover {
+  background: #a2b657;
+  color: white;
+}
+.type-859 .yes .clearfix:before,
+.type-859 .yes .clearfix:after {
+  content: '\0020';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+.type-859 a {
+  text-decoration: none;
+}
+.type-859 a .play {
+  margin-top: 71px;
+  width: 100%;
+  height: 178px;
+  text-align: center;
+  background: #a2b657;
+}
+.type-859 a .play h2 {
+  padding: 69px 30px;
+  color: #fff;
+  font-weight: 300;
+  letter-spacing: 2px;
+  font-size: 40px;
+  line-height: 40px;
+  font-family: "Lato", Arial, Tahoma, sans-serif;
+}
+.type-859 a .play h2 .play-icon {
+  border: 3px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  margin: 0 30px;
+  position: relative;
+  top: 0px;
+  width: 50px;
+}
+.type-859 a .play h2 .play-icon i {
+  position: relative;
+  top: -7px;
+}
+@media only screen and (max-width: 767px) {
+  .type-859 a .play h2 .play-icon {
+    display: block;
+    margin: 20px auto;
+  }
+}
+@media only screen and (max-width: 479px) {
+  .type-859 a .play h2 {
+    font-size: 24px;
+    line-height: 24px;
+  }
+}
+@media only screen and (max-width: 959px) and (min-width: 768px) {
+  .type-859 a .play h2 {
+    font-size: 34px;
+    line-height: 34px;
+  }
+}
+@media only screen and (max-width: 767px) and (min-width: 480px) {
+  .type-859 a .play h2 {
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: normal;
+  }
+}
+@media (max-width: 768px) {
+  .type-859 a .play {
+    height: 320px;
+  }
+}
+.type-859 a .play:hover {
+  background: #0099ff;
+}
+.type-859 a .play:focus h2 {
+  text-decoration: none;
+}
+.type-859 a:hover {
+  text-decoration: none;
+}

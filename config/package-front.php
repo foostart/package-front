@@ -53,19 +53,21 @@ return [
         ], //home page
 
 
-        //detail page
-        'detail' => [
+        //rule page
+        'rule' => [
             'ids' => [
                 2034,
                 60,
+                7,
+                129,
             ],
             'libs' => [
             ]
-        ], //detail page
+        ], //rule page
 
 
-        //checklist page
-        'checklist' => [
+        //rules page
+        'rules' => [
             'ids' => [
                 2034,
                 129,
@@ -104,7 +106,8 @@ return [
     'assets_lib' => [
         'css' => [
             'packages/foostart/package-front/css/bootstrap-3.3.6.min.css',
-            'packages/foostart/package-front/css/font-awesome-4.6.3.min.css',
+            'packages/foostart/package-front/css/font-awesome-4.7.0.min.css',
+            'packages/foostart/package-front/css/styles-1.0.0.css',
         ],
         'js' => [
             'packages/foostart/package-front/js/jquery-2.1.4.min.js',

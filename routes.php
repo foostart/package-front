@@ -30,8 +30,8 @@ Route::group(['middleware' => ['web']], function () {
 | MAIN PAGES
 |-----------------------------------------------------------------------
 | 01. Home
-| 02. Checklist
-| 03. Item
+| 02. Rules
+| 03. Rule
 |
 */
 Route::group(['middleware' => ['web']], function () {
@@ -52,23 +52,28 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('/', [
             'as' => 'home',
             'uses' => 'HomeController@index'
+        ]); Route::get('/home', [
+            'as' => 'home',
+            'uses' => 'HomeController@index'
         ]);
 
         /**
-         * Item
+         * Rules
          */
-        Route::get('/item/{name}-{id}', [
-            'as' => 'item',
-            'uses' => 'ItemController@index'
+        Route::get('/rules/{name}-{id}', [
+            'as' => 'rules',
+            'uses' => 'RulesController@index'
         ])->where(['name' => '[a-zA-Z0-9-_]+','id' => '[0-9]+']);
 
         /**
-         * Checklist
+         * Rule
          */
-        Route::get('/checklist/{name}-{id}', [
-            'as' => 'checklist',
-            'uses' => 'ChecklistController@index'
+        Route::get('/rule/{name}-{id}', [
+            'as' => 'rule',
+            'uses' => 'RuleController@index'
         ])->where(['name' => '[a-zA-Z0-9-_]+','id' => '[0-9]+']);
+
+
 
         /**
          * Search

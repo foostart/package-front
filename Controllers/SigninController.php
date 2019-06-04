@@ -2,11 +2,13 @@
 
 /*
 |-------------------------------------------------------------------------------
-| SigninController
+| HomeController
 |-------------------------------------------------------------------------------
-| @author: Kang
-| @website: http://foostart.com
-| @date: 27/01/2018
+| @author: ptnhuan
+| @id: LPTE03
+| @date: 11/04/2019
+| @location: B111 - TDC
+| @copyright: Lampart
 |
 */
 

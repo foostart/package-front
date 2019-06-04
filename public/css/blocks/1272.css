@@ -1,0 +1,67 @@
+a:hover {
+  text-decoration: none;
+}
+.read-more {
+  text-decoration: none;
+  color: #dacb46;
+  font-style: italic;
+}
+.read-more:hover {
+  color: #ffdb35;
+}
+.type-1272 a {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: normal;
+  margin: 0px 0px 0px 0px;
+  color: #000000;
+  overflow: hidden !important;
+}
+.type-1272 a:hover {
+  text-decoration: none;
+  color: #cb7152;
+}
+.type-1272 ul {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+}
+.type-1272 .widget-title {
+  word-wrap: break-word;
+  font: normal 24px/32px Varela Round;
+  position: relative;
+  overflow: hidden;
+  margin: 0px 0px 10px 0px;
+  padding: 0 0px 3px 0;
+  border-bottom: 1px solid #EDEDED;
+  line-height: 20px !important;
+}
+.type-1272 .cat-item {
+  margin: 0;
+  padding: 0 0 10px 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+.type-1272 .widget_archive ul li {
+  padding: 0 0 10px 0;
+}
+.type-1272 .widget_tag_cloud .tagcloud {
+  width: 350px;
+}
+.type-1272 .widget_tag_cloud .tagcloud a {
+  margin: 0;
+  padding: 5px 10px;
+  text-align: center;
+}
+.type-1272 .widget_tag_cloud .tagcloud a:hover {
+  background-color: #cb7152;
+  color: #ffffff;
+  border-radius: 20px;
+}
+@media (max-width: 480px) {
+  .type-1272 .widget_tag_cloud .tagcloud {
+    width: 100% !important;
+  }
+}

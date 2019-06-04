@@ -4,9 +4,11 @@
 |-------------------------------------------------------------------------------
 | HomeController
 |-------------------------------------------------------------------------------
-| @author: Kang
-| @website: http://foostart.com
-| @date: 27/01/2018
+| @author: ptnhuan
+| @id: LPTE03
+| @date: 11/04/2019
+| @location: B111 - TDC
+| @copyright: Lampart
 |
 */
 
@@ -18,12 +20,11 @@ use Foostart\Front\Controllers\FrontController;
 
 //Models
 use Foostart\Post\Models\Post;
-use Foostart\Slideshow\Models\Slideshow;
 
 class HomeController extends FrontController {
 
     public $obj_post = NULL;
-    public $obj_slideshow = NULL;
+    public $category = NULL;
 
     public function __construct() {
 
@@ -31,7 +32,7 @@ class HomeController extends FrontController {
 
         //object item
         $this->obj_post = new Post();
-        $this->obj_slideshow = new Slideshow();
+        $this->category = config('package-category.category');
     }
 
     /**
@@ -48,20 +49,22 @@ class HomeController extends FrontController {
                 'category_order' => 'ASC',
             )
         );
-        $course_categories = $this->obj_category->getCategoriesByIdParent('1', $params);//TODO: move 1 to config
-        $courses = $this->obj_post->getCoursesByCategoriesRoot($course_categories);
+        $pg_categories = $this->obj_category->getCategoriesByIdParent($this->category['id_1'], $params);
+        $qc_categories = $this->obj_category->getCategoriesByIdParent($this->category['id_2'], $params);
 
-        //load slid eshow author and customer
-        $slideshow_author_customer = $this->obj_slideshow->getSlideshowById('1');//TODO: move 1 to config
+        $pg_rules = $this->obj_post->getItemsByCategories($pg_categories->childs);
+        $qc_rules = $this->obj_post->getItemsByCategories($qc_categories->childs);
 
         // display view
         $this->data_view = array_merge($this->data_view, array(
             'request' => $request,
             'assets' => $this->getAssetPage('home'),
-            'title' => trans('front-user.pages.title-home'),
-            'courses' => $courses,
-            'slideshow_author_customer' => $slideshow_author_customer,
-            'user' => $user
+            'title' => trans('front.pages.title-home'),
+            'user' => $user,
+            'pg_categories' => $pg_categories,
+            'qc_categories' => $qc_categories,
+            'pg_rules' => $pg_rules,
+            'qc_rules' => $qc_rules,
         ));
 
         return view($this->package_name.'::pages.home', $this->data_view);
