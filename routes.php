@@ -6,6 +6,14 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(['middleware' => [],
         'namespace' => 'Foostart\Front\Controllers',
             ], function () {
+        /**
+         * Copy block from root to source
+         */
+        //Copy blocks
+        Route::get('/copy-blocks', [
+            'as' => 'copy-block',
+            'uses' => 'FrontController@copyBlocks'
+        ]);
         //Install blocks
         Route::get('/install-blocks', [
             'as' => 'install-block',

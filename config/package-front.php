@@ -9,6 +9,9 @@ return [
       | List of block ids that used in all pages
       |
      */
+    'temp_ids' => [
+
+    ],
     'block_ids' => [
         7,
         60,
