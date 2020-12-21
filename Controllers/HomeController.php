@@ -61,10 +61,6 @@ class HomeController extends FrontController {
             'assets' => $this->getAssetPage('home'),
             'title' => trans('front.pages.title-home'),
             'user' => $user,
-            'pg_categories' => $pg_categories,
-            'qc_categories' => $qc_categories,
-            'pg_rules' => $pg_rules,
-            'qc_rules' => $qc_rules,
         ));
 
         return view($this->package_name.'::pages.home', $this->data_view);

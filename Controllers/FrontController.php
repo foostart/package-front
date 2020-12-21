@@ -244,65 +244,55 @@ class FrontController extends Controller {
                 $dir_target_block_public = $this->dir_target_blocks . '/public';
 
                 //CSS
-                foreach ($page_config as $_page) {
+                foreach ($this->block_ids as $_id) {
 
-                    foreach ($_page['ids'] as $_id) {
+                    $source = realpath($this->dir_source_blocks . '/' . $_id . '/css/' . $_id . '.css');
 
-                        $source = realpath($this->dir_source_blocks . '/' . $_id . '/css/' . $_id . '.css');
+                    if (!empty($source)) {
 
-                        if (!empty($source)) {
-
-                            $dir_target = $dir_target_block_public . "/{$css}/blocks/";
-                            if (!file_exists($dir_target)) {
-                                 mkdir($dir_target, 0755    , true);
-                            }
-                            $target = $dir_target . '/' . $_id . '.css';
-
-                            copy($source, $target);
+                        $dir_target = $dir_target_block_public . "/{$css}/blocks/";
+                        if (!file_exists($dir_target)) {
+                             mkdir($dir_target, 0755    , true);
                         }
+                        $target = $dir_target . '/' . $_id . '.css';
+
+                        copy($source, $target);
                     }
                 }
 
                 //LESS
-                foreach ($page_config as $_page) {
+                foreach ($this->block_ids as $_id) {
 
-                    foreach ($_page['ids'] as $_id) {
+                    $source = realpath($this->dir_source_blocks . '/' . $_id . '/less/' . $_id . '.less');
 
-                        $source = realpath($this->dir_source_blocks . '/' . $_id . '/less/' . $_id . '.less');
+                    if (!empty($source)) {
 
-                        if (!empty($source)) {
-
-                            $dir_target = $dir_target_block_public . "/{$less}/blocks/";
-                            if (!file_exists($dir_target)) {
-                                 mkdir($dir_target, 0755    , true);
-                            }
-
-                            $target = $dir_target . '/' . $_id . '.less';
-
-                            copy($source, $target);
+                        $dir_target = $dir_target_block_public . "/{$less}/blocks/";
+                        if (!file_exists($dir_target)) {
+                             mkdir($dir_target, 0755    , true);
                         }
 
+                        $target = $dir_target . '/' . $_id . '.less';
+
+                        copy($source, $target);
                     }
                 }
 
                 //JS
-                foreach ($page_config as $_page) {
+               foreach ($this->block_ids as $_id) {
 
-                    foreach ($_page['ids'] as $_id) {
+                    $source = realpath($this->dir_source_blocks . '/' . $_id . '/js/' . $_id . '.js');
 
-                        $source = realpath($this->dir_source_blocks . '/' . $_id . '/js/' . $_id . '.js');
+                    if (!empty($source)) {
 
-                        if (!empty($source)) {
-
-                            $dir_target = $dir_target_block_public . "/{$js}/blocks/";
-                            if (!file_exists($dir_target)) {
-                                 mkdir($dir_target, 0755    , true);
-                            }
-
-                            $target = $dir_target . '/' . $_id . '.js';
-
-                            copy($source, $target);
+                        $dir_target = $dir_target_block_public . "/{$js}/blocks/";
+                        if (!file_exists($dir_target)) {
+                             mkdir($dir_target, 0755    , true);
                         }
+
+                        $target = $dir_target . '/' . $_id . '.js';
+
+                        copy($source, $target);
                     }
                 }
 
@@ -322,6 +312,7 @@ class FrontController extends Controller {
                             switch ($_type) {
                                 case 'js':
                                 case 'css':
+
                                     foreach ($_values as $_item) {
                                         $_source = realpath($this->dir_source_blocks . '/' . $_id . '/' . $_type . '/' . $_item . '.' . $_type);
 
@@ -361,28 +352,23 @@ class FrontController extends Controller {
             'image' => '/url\([\'"]*\.\.\/images\/(.*?)[\'"]*\)/',
         ];
         //find list of background images
-        foreach ($config_pages as $page) {
-            //css
-            if (!empty($page['ids'])) {
-                foreach ($page['ids'] as $_id) {
+        foreach ($this->block_ids as $_id) {
 
-                    $dir_source_blocks_asset_css = $this->dir_target_blocks .'/public/css/blocks/' . $_id .'.css';
+            $dir_source_blocks_asset_css = $this->dir_target_blocks .'/public/css/blocks/' . $_id .'.css';
 
-                    if (file_exists($dir_source_blocks_asset_css)) {
+            if (file_exists($dir_source_blocks_asset_css)) {
 
-                        $css_content = file_get_contents($dir_source_blocks_asset_css);
+                $css_content = file_get_contents($dir_source_blocks_asset_css);
 
-                        preg_match_all($patterns['image'], $css_content, $matches);
-                        if (!empty($matches[1])) {
+                preg_match_all($patterns['image'], $css_content, $matches);
+                if (!empty($matches[1])) {
 
-                            foreach ($matches[1] as $image_name) {
-                                if (!in_array($image_name, $bkg_images)) {
-                                    $bkg_images[] = $image_name;
-                                }
-                            }
-
+                    foreach ($matches[1] as $image_name) {
+                        if (!in_array($image_name, $bkg_images)) {
+                            $bkg_images[] = $image_name;
                         }
                     }
+
                 }
             }
         }
@@ -430,7 +416,7 @@ class FrontController extends Controller {
             $_source = realpath($this->dir_source_blocks . '/' . $id . '/' . $id . '-content.php');
             $_target = $dir_target_block_views . '/' . $id . '-content.blade.php';
             if ($_source) {
-                //copy($_source, $_target);
+                copy($_source, $_target);
             }
         }
 
@@ -447,15 +433,13 @@ class FrontController extends Controller {
             //source images
             $_source = realpath($this->dir_source_blocks . '/' . $id . '/images');
 
-
-            //$this->xcopy($_source, $_target);
+            $this->xcopy($_source, $_target);
         }
 
         /**
          * Copy assets (css, js, libs) from block source
          */
-//        $this->copy_assets();
-
+        $this->copy_assets();
 
         /**
          * copy background image
@@ -469,9 +453,6 @@ class FrontController extends Controller {
     public function configBlockPageIds() {
         $this->block_page_ids = [
             'home' => $this->getPageConfig('home'),
-            'detail' => $this->getPageConfig('detail'),
-            'checklist' => $this->getPageConfig('checklist'),
-            'contact' => $this->getPageConfig('contact'),
         ];
         return $this->block_page_ids;
     }
