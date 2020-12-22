@@ -4,11 +4,11 @@
 |-------------------------------------------------------------------------------
 | HomeController
 |-------------------------------------------------------------------------------
-| @author: ptnhuan
+| @author: Foostart
 | @id: LPTE03
 | @date: 11/04/2019
 | @location: B111 - TDC
-| @copyright: Lampart
+| @copyright: Foostart
 |
 */
 
